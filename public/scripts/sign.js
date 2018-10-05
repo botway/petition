@@ -3,6 +3,8 @@ var ctx = canv.getContext("2d");
 var button = document.getElementById("submit");
 var sig = document.getElementById("sig");
 var form = document.getElementById("signForm");
+var inputs = document.getElementsByTagName("INPUT");
+var notice = document.getElementById("notice");
 var signed = false;
 
 canv.addEventListener("mousedown", function(e) {
@@ -25,9 +27,13 @@ function drawSig(e) {
 }
 
 button.addEventListener("click", function() {
+    [].slice.call(inputs).forEach(e => {
+        if (e.value == "") signed = false;
+    });
     if (signed) {
         form.submit();
     } else {
-        alert("Please Sign it!");
+        console.log(notice.style);
+        notice.style.visibility = "visible";
     }
 });

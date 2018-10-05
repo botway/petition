@@ -1,6 +1,5 @@
 <h1>Thank you very much!</h1>
 <img src="./assets/fireworks.png" alt="fireworks">
-<h3>Take a look who's also signed:</h3>
-{{#each users}}
-    <p>{{ this.first_name }} {{ this.last_name}}</p>
-{{/each}}
+<h3>Here's your signature:</h3>
+<img src="{{sig}}" alt="signature">
+<a href="/signers"><h2>See all {{signers}} signers</h2></a>
