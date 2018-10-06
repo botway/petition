@@ -9,7 +9,7 @@ const setSig = function(firstName, lastName, sig) {
             `INSERT INTO signatures (first_name, last_name, sig) VALUES ($1, $2, $3) RETURNING id`,
             [firstName, lastName, sig]
         )
-        .then(function(results) {
+        .then(results => {
             return results.rows[0].id;
         })
         .catch(function(err) {
@@ -21,7 +21,6 @@ const getSig = function(id) {
     return db
         .query(`SELECT sig FROM signatures WHERE id=$1`, [id])
         .then(function(results) {
-            console.log("sig", results.rows);
             return results.rows[0].sig;
         })
         .catch(function(err) {
@@ -43,7 +42,7 @@ const getAll = function() {
 const getNumSigners = function() {
     return db
         .query(`SELECT COUNT (*) FROM signatures`)
-        .then(function(results) {
+        .then(results => {
             return results.rows[0].count;
         })
         .catch(function(err) {

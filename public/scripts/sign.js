@@ -33,7 +33,6 @@ button.addEventListener("click", function() {
     if (signed) {
         form.submit();
     } else {
-        console.log(notice.style);
         notice.style.visibility = "visible";
     }
 });

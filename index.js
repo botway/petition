@@ -3,6 +3,10 @@ const app = express();
 const hb = require("express-handlebars");
 const cookieParser = require("cookie-parser");
 const cookieSession = require("cookie-session");
+const csurf = require("csurf");
+const helmet = require("helmet");
+
+app.use(helmet());
 
 const bodyParser = require("body-parser");
 const db = require("./db");
@@ -21,6 +25,12 @@ app.use(
     })
 );
 
+app.use(csurf());
+app.use(function(req, res, next) {
+    res.locals.csrfToken = req.csrfToken();
+    next();
+});
+
 app.get("/", (req, res) => {
     if (req.session.signatureId) {
         res.redirect("/thanks");
@@ -29,7 +39,6 @@ app.get("/", (req, res) => {
             layout: "main"
         });
     }
-    // console.log("req session: ", req.session);
 });
 
 app.get("/thanks", (req, res) => {
@@ -56,7 +65,6 @@ app.get("/signers", (req, res) => {
 app.post("/", (req, res) => {
     db.setSig(req.body.firstName, req.body.lastName, req.body.sig).then(id => {
         req.session.signatureId = id;
-        // res.cookie("signed", true);
         res.redirect("/thanks");
     });
 });
