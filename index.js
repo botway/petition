@@ -100,27 +100,40 @@ app.post("/register", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
+    let data = {};
+    if (req.session.badlogin) {
+        data.message = "need valid password/email";
+        req.session.badlogin = null;
+    }
     res.render("login", {
-        layout: "main"
+        layout: "main",
+        data: data
     });
 });
 
 app.post("/login", (req, res) => {
-    db.getUser(req.body.email).then(results => {
-        db.checkPassword(req.body.password, results.password)
-            .then(() => {
-                req.session.user = {
-                    id: results.id,
-                    first_name: results.first_name,
-                    last_name: results.last_name
-                };
-                req.session.signatureId = results.id; //should be changed
-                res.redirect("/petition");
-            })
-            .catch(err => {
-                console.log("login", err.message);
-            });
-    });
+    db.getUser(req.body.email)
+        .then(results => {
+            db.checkPassword(req.body.password, results.password)
+                .then(() => {
+                    req.session.user = {
+                        id: results.id,
+                        first_name: results.first_name,
+                        last_name: results.last_name
+                    };
+                    req.session.signatureId = results.id; //should be changed
+                    res.redirect("/petition");
+                })
+                .catch(err => {
+                    res.send(`<p>${err}</p>`);
+                    console.log("pw", err.message);
+                });
+        })
+        .catch(err => {
+            req.session.badlogin = true;
+            res.redirect("/login");
+            console.log("user", err.message);
+        });
 });
 
 app.get("/thanks", (req, res) => {

@@ -1,5 +1,5 @@
 <img src="./assets/symbol.png" alt="symbol">
-<p id="notice" style="visibility:hidden;">Hey, please fill out the forms!</p>
+<p id="notice" style="visibility:{{#if data.message}}visible;{{else}}hidden;{{/if}}">{{#if data.message}}{{data.message}}{{else}}Hey, please fill out the forms!{{/if}}</p>
 <form id="form" method="post">
     <input type="text" name="email" id="firstName" value="" placeholder="some@email.com">
     <input type="password" name="password" id="password" value="" placeholder="your password">
