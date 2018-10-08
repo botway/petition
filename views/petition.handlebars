@@ -1,9 +1,8 @@
 <h1>Welcome to Petition</h1>
-<img src="./assets/fireworks.png" alt="fireworks">
+<img src="./assets/symbol.png" alt="symbol">
+<h3>{{data.first_name}} {{data.last_name}} </h3>
 <p id="notice" style="visibility:hidden;">Hey, sign the stuff before submitting!</p>
-<form id="signForm" method="post">
-    <input type="text" name="firstName" id="firstName" value="Andrew" placeholder="First Name">
-    <input type="text" name="lastName" id="lastName" value="Xoroz" placeholder="Last Name">
+<form id="form" method="post">
     <input type="hidden" name="sig" id="sig" value="">
     <input type="hidden" name="_csrf" value="{{csrfToken}}">
 </form>

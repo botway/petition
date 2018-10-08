@@ -26,19 +26,101 @@ app.use(
 );
 
 app.use(csurf());
+
 app.use(function(req, res, next) {
     res.locals.csrfToken = req.csrfToken();
     next();
 });
 
-app.get("/", (req, res) => {
+app.use(function logout(req, res, next) {
+    if (req.body.logout) {
+        req.session = null;
+        res.redirect("/login");
+    } else {
+        next();
+    }
+});
+
+function checkForUser(req, res, next) {
+    if (!req.session.user) {
+        res.redirect("/register");
+    } else {
+        next();
+    }
+}
+
+function checkForSig(req, res, next) {
     if (req.session.signatureId) {
         res.redirect("/thanks");
     } else {
-        res.render("petition", {
-            layout: "main"
-        });
+        next();
     }
+}
+
+app.get("/", checkForUser, (req, res) => {
+    res.redirect("/petition");
+});
+
+app.get("/petition", checkForUser, checkForSig, (req, res) => {
+    // console.log("USER", req.session.user);
+    res.render("petition", {
+        layout: "main",
+        data: req.session.user
+    });
+});
+
+app.post("/petition", (req, res) => {
+    db.setSig(req.session.user.id, req.body.sig).then(id => {
+        req.session.signatureId = id;
+        res.redirect("/thanks");
+    });
+});
+
+app.get("/register", (req, res) => {
+    res.render("register", {
+        layout: "main"
+    });
+});
+
+app.post("/register", (req, res) => {
+    console.log("register");
+    db.hashPassword(req.body.password).then(hash => {
+        db.createUser(
+            req.body.firstName,
+            req.body.lastName,
+            req.body.email,
+            hash
+        )
+            .then(results => {
+                req.session.user = results;
+                res.redirect("/petition");
+            })
+            .catch(err => console.log("register", err.message));
+    });
+});
+
+app.get("/login", (req, res) => {
+    res.render("login", {
+        layout: "main"
+    });
+});
+
+app.post("/login", (req, res) => {
+    db.getUser(req.body.email).then(results => {
+        db.checkPassword(req.body.password, results.password)
+            .then(() => {
+                req.session.user = {
+                    id: results.id,
+                    first_name: results.first_name,
+                    last_name: results.last_name
+                };
+                req.session.signatureId = results.id; //should be changed
+                res.redirect("/petition");
+            })
+            .catch(err => {
+                console.log("login", err.message);
+            });
+    });
 });
 
 app.get("/thanks", (req, res) => {
@@ -59,13 +141,6 @@ app.get("/signers", (req, res) => {
             layout: "main",
             users: users
         });
-    });
-});
-
-app.post("/", (req, res) => {
-    db.setSig(req.body.firstName, req.body.lastName, req.body.sig).then(id => {
-        req.session.signatureId = id;
-        res.redirect("/thanks");
     });
 });
 

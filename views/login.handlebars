@@ -1,0 +1,9 @@
+<img src="./assets/symbol.png" alt="symbol">
+<p id="notice" style="visibility:hidden;">Hey, please fill out the forms!</p>
+<form id="form" method="post">
+    <input type="text" name="email" id="firstName" value="" placeholder="some@email.com">
+    <input type="password" name="password" id="password" value="" placeholder="your password">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
+</form>
+<button type="button" name="button" id="login">LOG IN</button>
+<script src="./scripts/login.js" charset="utf-8"></script>

@@ -1,0 +1,13 @@
+<h1>Welcome to Petition! Please, register.</h1>
+<img src="./assets/symbol.png" alt="symbol">
+<p id="notice" style="visibility:hidden;">Hey, please fill out the forms!</p>
+<form id="form" method="post">
+    <input type="text" name="firstName" id="firstName" value="" placeholder="First Name">
+    <input type="text" name="lastName" id="lastName" value="" placeholder="Last Name">
+    <input type="text" name="email" id="email" value="" placeholder="some@email.com">
+    <input type="password" name="password" id="password" value="" placeholder="your password">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
+</form>
+<button type="button" name="button" id="signup">SIGN UP</button>
+<p>If you are already a member, please <a href="/login">log in</a></p>
+<script src="./scripts/login.js" charset="utf-8"></script>

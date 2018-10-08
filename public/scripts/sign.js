@@ -1,9 +1,9 @@
 var canv = document.getElementById("canvSig");
 var ctx = canv.getContext("2d");
-var button = document.getElementById("submit");
+var submit = document.getElementById("submit");
 var sig = document.getElementById("sig");
-var form = document.getElementById("signForm");
-var inputs = document.getElementsByTagName("INPUT");
+var form = document.getElementById("form");
+// var inputs = document.getElementsByTagName("INPUT");
 var notice = document.getElementById("notice");
 var signed = false;
 
@@ -26,10 +26,7 @@ function drawSig(e) {
     ctx.stroke();
 }
 
-button.addEventListener("click", function() {
-    [].slice.call(inputs).forEach(e => {
-        if (e.value == "") signed = false;
-    });
+submit.addEventListener("click", function() {
     if (signed) {
         form.submit();
     } else {
