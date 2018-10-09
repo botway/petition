@@ -1,10 +1,24 @@
 <h1>Thank you very much again!</h1>
-<img src="./assets/symbol.png" alt="symbol">
+<img src="/assets/symbol.png" alt="symbol">
 <form id="form" method="post">
     <button type="submit" name="logout" value="true">LOG OUT</button>
     <input type="hidden" name="_csrf" value="{{csrfToken}}">
 </form>
-<h3>These are who signed:</h3>
-{{#each users}}
-    <p>{{ this.first_name }} {{ this.last_name}}</p>
-{{/each}}
+<h2>These are who signed{{#if city}}in {{city}}{{/if}}:</h2>
+<ul id="signers">
+    {{#each users}}
+        <li>
+            {{#if this.homepage}}
+                <span><a href="{{this.homepage}}">{{ this.first_name }} {{ this.last_name}}</a></span>
+            {{else}}
+                <span>{{ this.first_name }} {{ this.last_name}}</span>
+            {{/if}}
+            {{#if this.age}}
+                <span>{{this.age}}</span>
+            {{/if}}
+            {{#if this.city}}
+                <span><a href="/signers/{{toLowerCase this.city}}">{{this.city}}</a></span>
+            {{/if}}
+        </li>
+    {{/each}}
+</ul>

@@ -11,7 +11,17 @@ app.use(helmet());
 const bodyParser = require("body-parser");
 const db = require("./db");
 
-app.engine("handlebars", hb());
+app.engine(
+    "handlebars",
+    hb({
+        helpers: {
+            toLowerCase: function(str) {
+                return str.toLowerCase();
+            }
+        }
+    })
+);
+
 app.set("view engine", "handlebars");
 
 app.use(express.static("public"));
@@ -62,7 +72,6 @@ app.get("/", checkForUser, (req, res) => {
 });
 
 app.get("/petition", checkForUser, checkForSig, (req, res) => {
-    // console.log("USER", req.session.user);
     res.render("petition", {
         layout: "main",
         data: req.session.user
@@ -77,8 +86,14 @@ app.post("/petition", (req, res) => {
 });
 
 app.get("/register", (req, res) => {
+    let data = {};
+    if (req.session.err) {
+        data.message = req.session.err;
+        req.session.err = null;
+    }
     res.render("register", {
-        layout: "main"
+        layout: "main",
+        data: data
     });
 });
 
@@ -93,17 +108,41 @@ app.post("/register", (req, res) => {
         )
             .then(results => {
                 req.session.user = results;
-                res.redirect("/petition");
+                res.redirect("/profile");
             })
-            .catch(err => console.log("register", err.message));
+            .catch(err => {
+                req.session.err = err.message;
+                res.redirect("/register");
+                // console.log("register", err.message);
+            });
     });
+});
+
+app.get("/profile", (req, res) => {
+    res.render("profile", {
+        layout: "main"
+    });
+});
+
+app.post("/profile", (req, res) => {
+    console.log("UID", req.session.user.id);
+    db.createProfile(
+        req.body.age,
+        req.body.city,
+        req.body.homepage,
+        req.session.user.id
+    )
+        .then(results => {
+            res.redirect("/petition");
+        })
+        .catch(err => console.log(err.message));
 });
 
 app.get("/login", (req, res) => {
     let data = {};
-    if (req.session.badlogin) {
+    if (req.session.err) {
         data.message = "need valid password/email";
-        req.session.badlogin = null;
+        req.session.err = null;
     }
     res.render("login", {
         layout: "main",
@@ -121,7 +160,7 @@ app.post("/login", (req, res) => {
                         first_name: results.first_name,
                         last_name: results.last_name
                     };
-                    req.session.signatureId = results.id; //should be changed
+                    req.session.signatureId = results.sigid;
                     res.redirect("/petition");
                 })
                 .catch(err => {
@@ -130,7 +169,7 @@ app.post("/login", (req, res) => {
                 });
         })
         .catch(err => {
-            req.session.badlogin = true;
+            req.session.err = err.message;
             res.redirect("/login");
             console.log("user", err.message);
         });
@@ -149,10 +188,21 @@ app.get("/thanks", (req, res) => {
 });
 
 app.get("/signers", (req, res) => {
-    db.getAll().then(users => {
+    db.getAllSigners().then(users => {
         res.render("signers", {
             layout: "main",
             users: users
+        });
+    });
+});
+
+app.get("/signers/:city", (req, res) => {
+    db.getSignersCity(req.params.city).then(users => {
+        console.log(users);
+        res.render("signers", {
+            layout: "main",
+            users: users,
+            city: req.params.city
         });
     });
 });

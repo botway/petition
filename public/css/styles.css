@@ -3,3 +3,13 @@ html {
     background-color: crimson;
     font-family: monospace;
 }
+
+#signers {
+    font-size: 1.3em;
+    list-style-type: none;
+    padding-inline-start: 0;
+}
+
+#signers li {
+    padding-bottom: 0.8em;
+}

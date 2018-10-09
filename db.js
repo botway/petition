@@ -7,60 +7,96 @@ var db = spicedPg(`postgres:${dbUser}:${dbPassword}@localhost:5432/petition`);
 const setSig = function(uid, sig) {
     return db
         .query(
-            `INSERT INTO signatures (uid, sig) VALUES ($1, $2) RETURNING id`,
+            `INSERT INTO signatures (uid, sig) VALUES ($1, $2) RETURNING id;`,
             [uid, sig]
         )
         .then(results => {
             return results.rows[0].id;
         })
-        .catch(function(err) {
+        .catch(err => {
             console.log(err);
         });
 };
 
 const getUser = function(email) {
     const q = `
-        SELECT first_name, last_name, id, password
+        SELECT first_name,
+        last_name,
+        registered_users.id,
+        password,
+        signatures.id AS sigId
         FROM registered_users
+        FULL OUTER JOIN signatures
+        ON registered_users.id = signatures.uid
         WHERE email = $1;
     `;
     const params = [email || null];
 
-    return db.query(q, params).then(results => {
-        return results.rows[0];
-    });
+    return db
+        .query(q, params)
+        .then(results => {
+            return results.rows[0];
+        })
+        .catch(err => {
+            console.log(err.message);
+        });
 };
 
 const getSig = function(id) {
     return db
-        .query(`SELECT sig FROM signatures WHERE id=$1`, [id])
+        .query(`SELECT sig FROM signatures WHERE id=$1;`, [id])
         .then(function(results) {
             return results.rows[0].sig;
         })
-        .catch(function(err) {
+        .catch(err => {
             console.log(err);
         });
 };
 
-const getAll = function() {
+const getAllSigners = function() {
+    const q = `
+        SELECT first_name,last_name, age, city, homepage
+        FROM registered_users
+        INNER JOIN user_profiles
+        ON registered_users.id = user_profiles.uid
+        INNER JOIN signatures
+        ON registered_users.id = signatures.uid;
+    `;
     return db
-        .query(`SELECT first_name, last_name FROM registered_users`)
+        .query(q)
         .then(results => {
             return results.rows;
         })
-        .catch(function(err) {
-            console.log(err);
-        });
+        .catch(err => console.log(err.message));
+};
+
+const getSignersCity = function(city) {
+    const q = `
+        SELECT first_name,last_name, age, homepage FROM registered_users
+        INNER JOIN user_profiles
+        ON registered_users.id = user_profiles.uid
+        INNER JOIN signatures
+        ON registered_users.id = signatures.uid
+        WHERE LOWER(user_profiles.city) = LOWER($1);
+    `;
+    const params = [city || null];
+
+    return db
+        .query(q, params)
+        .then(results => {
+            return results.rows;
+        })
+        .catch(err => console.log(err.message));
 };
 
 const getNumSigners = function() {
     return db
-        .query(`SELECT COUNT (*) FROM signatures`)
+        .query(`SELECT COUNT (*) FROM signatures;`)
         .then(results => {
             return results.rows[0].count;
         })
-        .catch(function(err) {
-            console.log(err);
+        .catch(err => {
+            console.log(err.message);
         });
 };
 
@@ -70,7 +106,7 @@ const createUser = function(first, last, email, hashedPw) {
         (first_name, last_name, email, password)
         VALUES
         ($1,$2,$3,$4)
-        RETURNING id, first_name,last_name, email
+        RETURNING id, first_name,last_name, email;
     `;
 
     const params = [
@@ -80,9 +116,35 @@ const createUser = function(first, last, email, hashedPw) {
         hashedPw || null
     ];
 
-    return db.query(q, params).then(results => {
-        return results.rows[0];
-    });
+    return db
+        .query(q, params)
+        .then(results => {
+            return results.rows[0];
+        })
+        .catch(err => {
+            console.log(err.message);
+        });
+};
+
+const createProfile = function(age, city, homepage, uid) {
+    const q = `
+        INSERT INTO user_profiles
+        (age, city, homepage, uid)
+        VALUES
+        ($1,$2,$3,$4)
+        RETURNING id, age, city, homepage;
+    `;
+
+    const params = [age || null, city || null, homepage || null, uid || null];
+
+    return db
+        .query(q, params)
+        .then(results => {
+            return results.rows[0];
+        })
+        .catch(err => {
+            console.log(err.message);
+        });
 };
 
 const hashPassword = function(plainTextPassword) {
@@ -116,8 +178,10 @@ const checkPassword = function(textFromLoginForm, hashedPwFromDb) {
 module.exports.getSig = getSig;
 module.exports.setSig = setSig;
 module.exports.getUser = getUser;
-module.exports.getAll = getAll;
+module.exports.getAllSigners = getAllSigners;
+module.exports.getSignersCity = getSignersCity;
 module.exports.getNumSigners = getNumSigners;
 module.exports.createUser = createUser;
+module.exports.createProfile = createProfile;
 module.exports.hashPassword = hashPassword;
 module.exports.checkPassword = checkPassword;
