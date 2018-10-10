@@ -1,8 +1,14 @@
 <h1>Thank you very much!</h1>
+<p id="notice" style="visibility:{{#if data.message}}visible;{{else}}hidden;{{/if}}">{{#if data.message}}{{data.message}}{{/if}}</p>
 <img src="./assets/symbol.png" alt="symbol">
 <h3>Here's your signature:</h3>
-<img src="{{sig}}" alt="signature">
-<a href="/signers"><h2>See all {{signers}} signers</h2></a>
+<img src="{{data.sig}}" alt="signature">
+<form id="form" method="post">
+    <button type="submit" name="deleteSig" value="true">DELETE YOUR SIG</button>
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
+</form>
+<a href="/signers"><h2>See all {{data.signers}} signers</h2></a>
+<a href="/profile/edit"><h2>Edit your profile</h2></a>
 <form id="form" method="post">
     <button type="submit" name="logout" value="true">LOG OUT</button>
     <input type="hidden" name="_csrf" value="{{csrfToken}}">

@@ -1,0 +1,19 @@
+<img src="/assets/symbol.png" alt="symbol">
+<h1>Edit your profile</h1>
+<p id="notice" style="visibility:{{#if data.message}}visible;{{else}}hidden;{{/if}}">{{#if data.message}}{{data.message}}{{else}}Hey, please fill out the forms!{{/if}}</p>
+<form id="form" method="post" action="/profile/edit">
+    <input type="text" name="first_name" value="{{data.first_name}}" placeholder="First Name" required>
+    <input type="text" name="last_name" value="{{data.last_name}}" placeholder="Last Name" required>
+    <input type="email" name="email" value="{{data.email}}" placeholder="email adress" required>
+    <input type="password" name="password" value="" placeholder="password">
+    <input type="number" name="age" value="{{data.age}}" placeholder="age">
+    <input type="text" name="city" value="{{data.city}}" placeholder="City">
+    <input type="url" name="homepage" value="{{data.homepage}}" placeholder="homepage">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
+    <button type="submit" name="update" id="update">UPDATE</button>
+</form>
+<form id="deleteProfile" method="post">
+    <button type="submit" name="deleteProfile" value="true">DELETE PROFILE</button>
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
+</form>
+<!-- <p>If you are already a member, please <a href="/login">log in</a></p> -->

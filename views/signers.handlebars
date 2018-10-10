@@ -4,7 +4,7 @@
     <button type="submit" name="logout" value="true">LOG OUT</button>
     <input type="hidden" name="_csrf" value="{{csrfToken}}">
 </form>
-<h2>These are who signed{{#if city}}in {{city}}{{/if}}:</h2>
+<h2>These are who signed{{#if city}}in {{toUpperCase city}}{{/if}}:</h2>
 <ul id="signers">
     {{#each users}}
         <li>

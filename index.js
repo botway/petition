@@ -17,6 +17,9 @@ app.engine(
         helpers: {
             toLowerCase: function(str) {
                 return str.toLowerCase();
+            },
+            toUpperCase: function(str) {
+                return str.toUpperCase();
             }
         }
     })
@@ -46,6 +49,28 @@ app.use(function logout(req, res, next) {
     if (req.body.logout) {
         req.session = null;
         res.redirect("/login");
+    } else {
+        next();
+    }
+});
+
+app.use(function deleteSig(req, res, next) {
+    if (req.body.deleteSig) {
+        db.delSig(req.session.user.id).then(() => {
+            req.session.signatureId = null;
+            res.redirect("/petition");
+        });
+    } else {
+        next();
+    }
+});
+
+app.use(function deleteProfile(req, res, next) {
+    if (req.body.deleteProfile) {
+        db.delProfile(req.session.user.id).then(() => {
+            req.session = null;
+            res.redirect("/register");
+        });
     } else {
         next();
     }
@@ -98,7 +123,6 @@ app.get("/register", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-    console.log("register");
     db.hashPassword(req.body.password).then(hash => {
         db.createUser(
             req.body.firstName,
@@ -125,24 +149,34 @@ app.get("/profile", (req, res) => {
 });
 
 app.post("/profile", (req, res) => {
-    console.log("UID", req.session.user.id);
-    db.createProfile(
-        req.body.age,
-        req.body.city,
-        req.body.homepage,
-        req.session.user.id
-    )
+    db.writeProfile(req.session.user.id, req.body)
         .then(results => {
             res.redirect("/petition");
         })
         .catch(err => console.log(err.message));
 });
 
+app.get("/profile/edit", (req, res) => {
+    db.getProfile(req.session.user.id).then(data => {
+        res.render("editprofile", {
+            layout: "main",
+            data: data
+        });
+    });
+});
+
+app.post("/profile/edit", (req, res) => {
+    db.updateProfile(req.session.user.id, req.body).then(results => {
+        req.session.message = "your profile was updated";
+        res.redirect("/thanks");
+    });
+});
+
 app.get("/login", (req, res) => {
     let data = {};
-    if (req.session.err) {
-        data.message = "need valid password/email";
-        req.session.err = null;
+    if (req.session.message) {
+        data.message = req.session.message;
+        req.session.message = null;
     }
     res.render("login", {
         layout: "main",
@@ -154,14 +188,19 @@ app.post("/login", (req, res) => {
     db.getUser(req.body.email)
         .then(results => {
             db.checkPassword(req.body.password, results.password)
-                .then(() => {
-                    req.session.user = {
-                        id: results.id,
-                        first_name: results.first_name,
-                        last_name: results.last_name
-                    };
-                    req.session.signatureId = results.sigid;
-                    res.redirect("/petition");
+                .then(match => {
+                    if (match) {
+                        req.session.user = {
+                            id: results.id,
+                            first_name: results.first_name,
+                            last_name: results.last_name
+                        };
+                        req.session.signatureId = results.sigid;
+                        res.redirect("/petition");
+                    } else {
+                        req.session.message = "bad login";
+                        res.redirect("/login");
+                    }
                 })
                 .catch(err => {
                     res.send(`<p>${err}</p>`);
@@ -169,19 +208,22 @@ app.post("/login", (req, res) => {
                 });
         })
         .catch(err => {
-            req.session.err = err.message;
-            res.redirect("/login");
             console.log("user", err.message);
         });
 });
 
 app.get("/thanks", (req, res) => {
+    let data = {};
+    if (req.session.message) {
+        data.message = req.session.message;
+    }
     db.getNumSigners().then(num => {
         db.getSig(req.session.signatureId).then(sig => {
+            data.signers = num;
+            data.sig = sig;
             res.render("thanks", {
                 layout: "main",
-                signers: num,
-                sig: sig
+                data: data
             });
         });
     });
@@ -198,7 +240,6 @@ app.get("/signers", (req, res) => {
 
 app.get("/signers/:city", (req, res) => {
     db.getSignersCity(req.params.city).then(users => {
-        console.log(users);
         res.render("signers", {
             layout: "main",
             users: users,
