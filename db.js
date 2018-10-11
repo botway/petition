@@ -1,10 +1,18 @@
 var spicedPg = require("spiced-pg");
 const bcrypt = require("bcryptjs");
-const { dbUser, dbPassword } = require("./secrets");
+// const { dbUser, dbPassword } = require("./secrets");
+let secrets;
+if (process.env.NODE_ENV === "production") {
+    secrets = process.env;
+} else {
+    secrets = require("./secrets");
+}
 
 var db = spicedPg(
     process.env.DATABASE_URL ||
-        `postgres:${dbUser}:${dbPassword}@localhost:5432/petition`
+        `postgres:${secrets.dbUser}:${
+            secrets.dbPassword
+        }@localhost:5432/petition`
 );
 // var dbUrl =
 //     process.env.DATABASE_URL ||

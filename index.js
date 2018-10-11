@@ -251,7 +251,7 @@ app.get("/signers/:city", (req, res) => {
     db.getSignersCity(req.params.city).then(users => {
         res.render("signers", {
             layout: "main",
-            users: users,
+            data: users,
             city: req.params.city
         });
     });
