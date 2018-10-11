@@ -2,7 +2,13 @@ var spicedPg = require("spiced-pg");
 const bcrypt = require("bcryptjs");
 const { dbUser, dbPassword } = require("./secrets");
 
-var db = spicedPg(`postgres:${dbUser}:${dbPassword}@localhost:5432/petition`);
+var db = spicedPg(
+    process.env.DATABASE_URL ||
+        `postgres:${dbUser}:${dbPassword}@localhost:5432/petition`
+);
+// var dbUrl =
+//     process.env.DATABASE_URL ||
+//     "postgres://spicedling:password@localhost:5432/petition";
 
 const getUser = function(email) {
     const q = `
@@ -66,7 +72,7 @@ const delSig = function(id) {
 
 const getAllSigners = function() {
     const q = `
-        SELECT first_name,last_name, age, city, homepage
+        SELECT first_name,last_name, age, city, homepage, registered_users.id as uid
         FROM registered_users
         LEFT JOIN user_profiles
         ON registered_users.id = user_profiles.uid

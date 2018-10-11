@@ -13,3 +13,7 @@ html {
 #signers li {
     padding-bottom: 0.8em;
 }
+
+.sig {
+    border: white 1px solid;
+}

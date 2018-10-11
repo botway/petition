@@ -20,6 +20,10 @@ app.engine(
             },
             toUpperCase: function(str) {
                 return str.toUpperCase();
+            },
+            compare: function(a, b) {
+                console.log("comparing", a, b);
+                return true;
             }
         }
     })
@@ -213,6 +217,7 @@ app.post("/login", (req, res) => {
 });
 
 app.get("/thanks", (req, res) => {
+    // let data = req.session.user;
     let data = {};
     if (req.session.message) {
         data.message = req.session.message;
@@ -221,6 +226,8 @@ app.get("/thanks", (req, res) => {
         db.getSig(req.session.signatureId).then(sig => {
             data.signers = num;
             data.sig = sig;
+            data.first_name = req.session.user.first_name;
+            data.last_name = req.session.user.last_name;
             res.render("thanks", {
                 layout: "main",
                 data: data
@@ -231,9 +238,11 @@ app.get("/thanks", (req, res) => {
 
 app.get("/signers", (req, res) => {
     db.getAllSigners().then(users => {
+        // users.owner_id = req.session.user.id;
+        console.log(users);
         res.render("signers", {
             layout: "main",
-            users: users
+            data: users
         });
     });
 });
@@ -248,6 +257,6 @@ app.get("/signers/:city", (req, res) => {
     });
 });
 
-app.listen(8080, () => {
+app.listen(process.env.PORT || 8080, () => {
     console.log("listening on 8080");
 });

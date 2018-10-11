@@ -6,12 +6,12 @@
 </form>
 <h2>These are who signed{{#if city}}in {{toUpperCase city}}{{/if}}:</h2>
 <ul id="signers">
-    {{#each users}}
-        <li>
+    {{#each data}}
+        <li {{#compare data.owner_id 2}} style="background-color:yellow;"{{/compare}}>
             {{#if this.homepage}}
                 <span><a href="{{this.homepage}}">{{ this.first_name }} {{ this.last_name}}</a></span>
             {{else}}
-                <span>{{ this.first_name }} {{ this.last_name}}</span>
+                <span >{{ this.first_name }} {{ this.last_name}}</span>
             {{/if}}
             {{#if this.age}}
                 <span>{{this.age}}</span>
