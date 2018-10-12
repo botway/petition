@@ -1,12 +1,12 @@
 <h1>Welcome to Petition</h1>
 <h3>{{data.first_name}} {{data.last_name}} </h3>
-<img src="./assets/symbol.png" alt="symbol">
+<img id="symbol" src="./assets/symbol.png" alt="symbol">
 <p id="notice" style="visibility:hidden;">Hey, sign the stuff before submitting!</p>
-<form id="form" method="post">
+<form class="form" method="post">
     <input type="hidden" name="sig" id="sig" value="">
     <input type="hidden" name="_csrf" value="{{csrfToken}}">
 </form>
-<canvas id="canvSig" width="500" height="80" style="border:1px solid #FFF;"></canvas>
+<canvas class="sig" id="canvSig" width="500" height="90" style="border:1px solid #FFF;"></canvas>
 <p>Sign it here!</p>
-<button type="button" name="button" id="submit">SUBMIT</button>
+<button type="button" name="button" id="submit" class="button">SUBMIT</button>
 <script src="./scripts/sign.js" charset="utf-8"></script>

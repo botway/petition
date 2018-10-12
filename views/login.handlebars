@@ -1,10 +1,11 @@
-<img src="./assets/symbol.png" alt="symbol">
-<p id="notice" style="visibility:{{#if data.message}}visible;{{else}}hidden;{{/if}}">{{#if data.message}}{{data.message}}{{else}}Hey, please fill out the forms!{{/if}}</p>
-<form id="form" method="post">
+<h1>Welcome to the Petition! <br>Please, log in.</h1>
+<img id="symbol" src="./assets/symbol.png" alt="symbol">
+<p id="notice" style="display:{{#if data.message}}inherit;{{else}}none;{{/if}}">{{#if data.message}}{{data.message}}{{/if}}</p>
+<form class="form" method="post">
     <input type="email" name="email" value="" placeholder="some@email.com" required>
     <input type="password" name="password" value="" placeholder="your password" required>
     <input type="hidden" name="_csrf" value="{{csrfToken}}">
+    <button type="submit" name="button" id="login" class="button">LOG IN</button>
 </form>
-<button type="button" name="button" id="login">LOG IN</button>
 <p>If you are not a member, please <a href="/register">register</a></p>
-<script src="./scripts/login.js" charset="utf-8"></script>
+<!-- <script src="./scripts/login.js" charset="utf-8"></script> -->

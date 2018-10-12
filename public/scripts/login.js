@@ -12,6 +12,6 @@ button.addEventListener("click", () => {
     if (hasFilled) {
         form.submit();
     } else {
-        notice.style.visibility = "visible";
+        // notice.style.visibility = "visible";
     }
 });

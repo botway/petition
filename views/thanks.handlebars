@@ -1,16 +1,18 @@
 <h1>Thank you very much!</h1>
 <h3>{{data.first_name}} {{data.last_name}} </h3>
-<p id="notice" style="visibility:{{#if data.message}}visible;{{else}}hidden;{{/if}}">{{#if data.message}}{{data.message}}{{/if}}</p>
-<img src="./assets/symbol.png" alt="symbol">
+<p id="notice" style="display:{{#if data.message}}inherit;{{else}}none;{{/if}}">{{#if data.message}}{{data.message}}{{/if}}</p>
+<img id="symbol" src="./assets/symbol.png" alt="symbol">
 <h3>Here's your signature:</h3>
-<img class="sig" src="{{data.sig}}" alt="signature">
-<form id="form" method="post">
-    <button type="submit" name="deleteSig" value="true">DELETE YOUR SIG</button>
+<div class="frame">
+    <img class="sig" src="{{data.sig}}" alt="signature">
+</div>
+<form class="form" method="post">
+    <button type="submit" class="button" name="deleteSig" value="true">DELETE YOUR SIG</button>
     <input type="hidden" name="_csrf" value="{{csrfToken}}">
 </form>
 <a href="/signers"><h2>See all {{data.signers}} signers</h2></a>
 <a href="/profile/edit"><h2>Edit your profile</h2></a>
-<form id="form" method="post">
-    <button type="submit" name="logout" value="true">LOG OUT</button>
+<form class="form" method="post">
+    <button type="submit" class="button" name="logout" value="true">LOG OUT</button>
     <input type="hidden" name="_csrf" value="{{csrfToken}}">
 </form>

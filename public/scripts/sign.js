@@ -2,12 +2,12 @@ var canv = document.getElementById("canvSig");
 var ctx = canv.getContext("2d");
 var submit = document.getElementById("submit");
 var sig = document.getElementById("sig");
-var form = document.getElementById("form");
+var form = document.getElementsByClassName("form")[0];
 var notice = document.getElementById("notice");
 var signed = false;
 
 ctx.strokeStyle = "black";
-ctx.lineWidth = 2;
+ctx.lineWidth = 1;
 ctx.lineJoin = ctx.lineCap = "round";
 var isDrawing,
     points = [];

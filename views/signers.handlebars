@@ -1,9 +1,9 @@
-<h1>Thank you very much again!</h1>
-<img src="/assets/symbol.png" alt="symbol">
-<form id="form" method="post">
-    <button type="submit" name="logout" value="true">LOG OUT</button>
+<form class="form" method="post">
+    <button type="submit" name="logout" value="true" class="button">LOG OUT</button>
     <input type="hidden" name="_csrf" value="{{csrfToken}}">
 </form>
+<h1>Thank you very much again!</h1>
+<img id="symbol" src="/assets/symbol.png" alt="symbol">
 <h2>These are who signed{{#if city}}in {{toUpperCase city}}{{/if}}:</h2>
 <ul id="signers">
     {{#each data}}

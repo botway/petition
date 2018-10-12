@@ -2,6 +2,21 @@ body,
 html {
     background-color: crimson;
     font-family: monospace;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+#container {
+    position: absolute;
+    width: 100%;
+    /* top: 30%; */
+    text-align: center;
+    /* transform: translateY(10%); */
+}
+
+#symbol {
+    padding: 0.7em;
 }
 
 #signers {
@@ -15,5 +30,34 @@ html {
 }
 
 .sig {
-    border: white 1px solid;
+    /* border: solid 1px beige; */
+    border-radius: 0.4em;
+    background-color: beige;
+}
+.frame {
+    border: solid 1px black;
+    border-radius: 0.4em;
+    display: inline-block;
+    width: auto;
+    background-color: crimson;
+    padding: 0.3em;
+}
+.form {
+}
+.form input {
+    display: block;
+    padding-left: 0.5em;
+    margin: 0.5em auto;
+    width: 20em;
+    height: 2.3em;
+    border: solid 1px palevioletred;
+    border-radius: 0.4em;
+}
+
+.button {
+    padding: 0.7em;
+    border: solid 1px black;
+    border-radius: 0.4em;
+    font-weight: 800;
+    margin: 0.5em;
 }
