@@ -22,7 +22,7 @@ app.engine(
                 return str.toUpperCase();
             },
             compare: function(a, b) {
-                console.log("comparing", a, b);
+                // console.log("comparing", a, b);
                 return true;
             }
         }
@@ -116,9 +116,9 @@ app.post("/petition", (req, res) => {
 
 app.get("/register", (req, res) => {
     let data = {};
-    if (req.session.err) {
-        data.message = req.session.err;
-        req.session.err = null;
+    if (req.session.message) {
+        data.message = req.session.message;
+        req.session.message = null;
     }
     res.render("register", {
         layout: "main",
@@ -139,9 +139,9 @@ app.post("/register", (req, res) => {
                 res.redirect("/profile");
             })
             .catch(err => {
-                req.session.err = err.message;
+                req.session.message = err.message;
                 res.redirect("/register");
-                // console.log("register", err.message);
+                console.log("register", err.message);
             });
     });
 });
@@ -239,7 +239,6 @@ app.get("/thanks", (req, res) => {
 app.get("/signers", (req, res) => {
     db.getAllSigners().then(users => {
         // users.owner_id = req.session.user.id;
-        console.log(users);
         res.render("signers", {
             layout: "main",
             data: users

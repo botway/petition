@@ -134,10 +134,10 @@ const updateRegUser = function(id, data) {
 const updateProfile = function(id, data) {
     const reg_user = updateRegUser(id, data);
     const profile = writeProfile(id, data);
-    const pass = updatePassword(id, data.password);
     let promises;
 
-    if (data.password) {
+    if (data.password != "") {
+        const pass = updatePassword(id, data.password);
         promises = [reg_user, profile, pass];
     } else {
         promises = [reg_user, profile];
