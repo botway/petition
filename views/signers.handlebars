@@ -4,10 +4,10 @@
 </form>
 <h1>Thank you very much again!</h1>
 <img id="symbol" src="/assets/symbol.png" alt="symbol">
-<h2>These are who signed{{#if city}}in {{toUpperCase city}}{{/if}}:</h2>
+<h2>These are who signed{{#if city}} in {{toUpperCase city}}{{/if}}:</h2>
 <ul id="signers">
-    {{#each data}}
-        <li>
+    {{#each users}}
+        <li class="wow bounceInUp" {{#equal this.uid ../user_id}}style="background-color:beige"{{/equal}}>
             {{#if this.homepage}}
                 <span><a href="{{this.homepage}}">{{ this.first_name }} {{ this.last_name}}</a></span>
             {{else}}
