@@ -1,8 +1,7 @@
 const express = require("express"),
     router = express.Router();
 
-const { setSig } = require("../queries/q-sig");
-
+const { setSig } = require("../queries");
 const { checkForUser, checkForSig } = require("../middleware");
 
 router.get("/", checkForUser, checkForSig, (req, res) => {

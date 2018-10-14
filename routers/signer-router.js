@@ -1,12 +1,13 @@
 const express = require("express"),
     router = express.Router();
 
-const { delSig, getSig } = require("../queries/q-sig");
 const {
+    delSig,
+    getSig,
     getNumSigners,
     getAllSigners,
     getSignersCity
-} = require("../queries/q-signers");
+} = require("../queries");
 
 router.use(function deleteSig(req, res, next) {
     if (req.body.deleteSig) {

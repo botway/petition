@@ -1,4 +1,3 @@
-const db = require("../db").db;
 const bcrypt = require("bcryptjs");
 
 const hashPassword = function(plainTextPassword) {
@@ -29,24 +28,7 @@ const checkPassword = function(textFromLoginForm, hashedPwFromDb) {
     });
 };
 
-const updatePassword = function(id, textPass) {
-    return hashPassword(textPass)
-        .then(hashed => {
-            return db
-                .query(
-                    "UPDATE registered_users SET password = $2 WHERE id=$1;",
-                    [id, hashed]
-                )
-                .then(() => {
-                    return true;
-                })
-                .catch(err => console.log("pass", err.message));
-        })
-        .catch(err => console.log(err.message));
-};
-
 module.exports = {
-    updatePassword,
     hashPassword,
     checkPassword
 };

@@ -1,23 +1,25 @@
+<br>
 <form class="form" method="post">
     <button type="submit" name="logout" value="true" class="button">LOG OUT</button>
     <input type="hidden" name="_csrf" value="{{csrfToken}}">
 </form>
 <h1>Thank you very much again!</h1>
 <img id="symbol" src="/assets/symbol.png" alt="symbol">
-<h2>These are who signed{{#if city}} in {{toUpperCase city}}{{/if}}:</h2>
+<h2>Those are who signed{{#if city}} in {{toUpperCase city}}{{/if}}:</h2>
+<div class="line"></div>
 <ul id="signers">
     {{#each users}}
         <li class="wow bounceInUp" {{#equal this.uid ../user_id}}style="background-color:beige"{{/equal}}>
             {{#if this.homepage}}
-                <span><a href="{{this.homepage}}">{{ this.first_name }} {{ this.last_name}}</a></span>
+                <span class="name"><a href="{{this.homepage}}">{{ this.first_name }} {{ this.last_name}}</a></span>
             {{else}}
-                <span >{{ this.first_name }} {{ this.last_name}}</span>
+                <span class="name">{{ this.first_name }} {{ this.last_name}}</span>
             {{/if}}
             {{#if this.age}}
-                <span>{{this.age}}</span>
+                <span class="age">{{this.age}}</span>
             {{/if}}
             {{#if this.city}}
-                <span><a href="/signers/{{toLowerCase this.city}}">{{this.city}}</a></span>
+                <span class="city"><a href="/signers/{{toLowerCase this.city}}">{{this.city}}</a></span>
             {{/if}}
         </li>
     {{/each}}

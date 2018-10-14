@@ -6,7 +6,7 @@ const {
     getProfile,
     writeProfile,
     delProfile
-} = require("../queries/q-profile");
+} = require("../queries");
 
 router.use(function deleteProfile(req, res, next) {
     if (req.body.deleteProfile) {
@@ -27,7 +27,7 @@ router.get("/", (req, res) => {
 
 router.post("/", (req, res) => {
     writeProfile(req.session.user.id, req.body)
-        .then(results => {
+        .then(() => {
             res.redirect("/petition");
         })
         .catch(err => console.log(err.message));
@@ -43,7 +43,7 @@ router.get("/edit", (req, res) => {
 });
 
 router.post("/edit", (req, res) => {
-    updateProfile(req.session.user.id, req.body).then(results => {
+    updateProfile(req.session.user.id, req.body).then(() => {
         req.session.message = "your profile was updated";
         res.redirect("/thanks");
     });

@@ -1,8 +1,8 @@
 const express = require("express"),
     router = express.Router();
 
-const { checkPassword, hashPassword } = require("../queries/q-pass");
-const { createUser, getUser } = require("../queries/q-auth");
+const { checkPassword, hashPassword } = require("../pass");
+const { createUser, getUser } = require("../queries");
 
 router.use(function logout(req, res, next) {
     if (req.body.logout) {

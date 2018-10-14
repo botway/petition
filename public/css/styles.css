@@ -1,24 +1,51 @@
 body,
 html {
     background-color: crimson;
-    font-family: monospace;
+    /* font-family: monospace; */
+    font-family: "Nixie One", cursive;
     width: 100%;
     padding: 0;
     margin: 0;
     /* position: relative; */
 }
 
+h1 {
+    font-size: 2.4em;
+}
+h2 {
+    font-size: 1.4em;
+    padding-bottom: 0.75em;
+    margin-bottom: 0;
+}
+h3 {
+    font-family: "Roboto Slab", serif;
+    font-size: 1.4em;
+}
+p {
+    font-family: "Roboto Slab", serif;
+    font-size: 0.9em;
+}
+
+.name,
+.age,
+.city {
+    font-family: "Roboto Slab", serif;
+    font-size: 1.1em;
+}
+a {
+    color: rebeccapurple;
+}
 #container {
     width: 100%;
     text-align: center;
 }
 
 #symbol {
-    padding: 0.7em;
+    /* width: 20em; */
+    padding: 0.4em;
 }
 
 #signers {
-    font-size: 1.3em;
     list-style-type: none;
     padding-inline-start: 0;
 }
@@ -41,6 +68,9 @@ html {
     padding: 0.6em;
     margin: 0.8em;
 }
+.line {
+    border-bottom: dashed darkred 1px;
+}
 .form {
 }
 .form input {
@@ -59,4 +89,20 @@ html {
     border-radius: 0.4em;
     font-weight: 800;
     margin: 0.5em;
+}
+.left-wrap {
+    width: 50%;
+    float: left;
+}
+.right-wrap {
+    width: 50%;
+    float: right;
+}
+#update {
+    float: left;
+    margin-left: 4.4em;
+}
+#delete {
+    float: right;
+    margin-right: 4.4em;
 }
