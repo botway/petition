@@ -33,7 +33,8 @@ p {
     font-size: 1.1em;
 }
 a {
-    color: rebeccapurple;
+    /* color: rebeccapurple; */
+    color: darksalmon;
 }
 #container {
     width: 100%;
@@ -54,13 +55,18 @@ a {
     padding: 0.4em;
 }
 
+.signer {
+    background-color: beige;
+    border-radius: 0.5em;
+}
+
 .sig {
     /* border: solid 1px beige; */
     border-radius: 0.4em;
     background-color: beige;
 }
 .frame {
-    border: solid 1px black;
+    border: solid 1px darksalmon;
     border-radius: 0.4em;
     display: inline-block;
     width: auto;
@@ -90,6 +96,11 @@ a {
     font-weight: 800;
     margin: 0.5em;
 }
+.h-wrapper {
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+}
 .left-wrap {
     width: 50%;
     float: left;
@@ -105,4 +116,20 @@ a {
 #delete {
     float: right;
     margin-right: 4.4em;
+}
+.menu :hover {
+    cursor: pointer;
+    background-color: beige;
+    color: yellow;
+}
+.menu {
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    color: darksalmon;
+    font-family: "Roboto Slab", serif;
+    text-decoration: underline;
+    font-size: 1.1em;
+    padding: 0.2em 0.6em;
+    margin-bottom: 2em;
 }

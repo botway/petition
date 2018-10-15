@@ -6,12 +6,14 @@
 <div class="frame">
     <img class="sig" src="{{data.sig}}" alt="signature">
 </div>
-<form class="form" method="post">
-    <button type="submit" class="button" name="deleteSig" value="true">DELETE YOUR SIG</button>
-    <input type="hidden" name="_csrf" value="{{csrfToken}}">
-</form>
-<a href="/signers"><h2>See all {{data.signers}} signers</h2></a>
-<a href="/profile/edit"><h2>Edit your profile</h2></a>
+<div class="h-wrapper">
+    <a href="/profile/edit"><div class="menu">EDIT YOUR PROFILE</div></a>
+    <form class="form" method="post">
+        <button type="submit" name="deleteSig" class="menu" value="true">DEL YOUR SIG</button>
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
+    </form>
+    <a href="/signers"><div class="menu">SEE ALL {{data.signers}} SIGNERS</div></a>
+</div>
 <form class="form" method="post">
     <button type="submit" class="button" name="logout" value="true">LOG OUT</button>
     <input type="hidden" name="_csrf" value="{{csrfToken}}">

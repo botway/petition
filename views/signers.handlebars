@@ -5,22 +5,24 @@
 </form>
 <h1>Thank you very much again!</h1>
 <img id="symbol" src="/assets/symbol.png" alt="symbol">
-<h2>Those are who signed{{#if city}} in {{toUpperCase city}}{{/if}}:</h2>
+<h3>Those are who signed{{#if city}} in {{toUpperCase city}}{{/if}}:</h3>
 <div class="line"></div>
 <ul id="signers">
     {{#each users}}
-        <li class="wow bounceInUp" {{#equal this.uid ../user_id}}style="background-color:beige"{{/equal}}>
-            {{#if this.homepage}}
-                <span class="name"><a href="{{this.homepage}}">{{ this.first_name }} {{ this.last_name}}</a></span>
-            {{else}}
-                <span class="name">{{ this.first_name }} {{ this.last_name}}</span>
-            {{/if}}
-            {{#if this.age}}
-                <span class="age">{{this.age}}</span>
-            {{/if}}
-            {{#if this.city}}
-                <span class="city"><a href="/signers/{{toLowerCase this.city}}">{{this.city}}</a></span>
-            {{/if}}
+        <li class="wow bounceInUp">
+            <div>
+                {{#if this.homepage}}
+                <span class="name" {{#equal this.uid ../user_id}}style="color:beige"{{/equal}}><a href="{{this.homepage}}">{{ this.first_name }} {{ this.last_name}}</a></span>
+                {{else}}
+                <span class="name" {{#equal this.uid ../user_id}}style="color:beige"{{/equal}}>{{ this.first_name }} {{ this.last_name}}</span>
+                {{/if}}
+                {{#if this.age}}
+                <span class="age" {{#equal this.uid ../user_id}}style="color:beige"{{/equal}}>{{this.age}}</span>
+                {{/if}}
+                {{#if this.city}}
+                <span class="city"><a {{#equal this.uid ../user_id}}style="color:beige"{{/equal}} href="/signers/{{toLowerCase this.city}}">{{this.city}}</a></span>
+                {{/if}}
+            </div>
         </li>
     {{/each}}
 </ul>
